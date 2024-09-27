@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Dashboard</title>
+    <style>
+        /* Your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>SUPPLIER DASHBOARD</h1>
+    <h2>Welcome, {{ user.username }}</h2>
+    <h2>Purchase Orders</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in purchase_orders %}
+            <tr>
+                <td>{{ order.product.name }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>
+                    <select name="order_status" id="order_status_{{ order.id }}">
+                        {% for status in order.STATUS_CHOICES %}
+                        <option value="{{ status.0 }}" {% if order.order_status == status.0 %} selected {% endif %}>
+                            {{ status.1 }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><button onclick="updateOrderStatus('{{ order.id }}')">Update Status</button></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No purchase orders found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'login' %}">Logout</a>
+
+    <script>
+        function updateOrderStatus(orderId) {
+            var statusSelect = document.getElementById('order_status_' + orderId);
+            var newStatus = statusSelect.value;
+            var formData = new FormData();
+            formData.append('order_id', orderId);
+            formData.append('order_status', newStatus);
+
+            fetch('/update_purchase_order/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Status updated successfully
+                    // You can show a success message or update the UI as needed
+                    window.location.reload();  // Reload the page to reflect the changes
+                } else {
+                    // Error handling
+                    console.error('Failed to update order status');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating order status:', error);
+            });
+        }
+    </script>
+</body>
+</html>

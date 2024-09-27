@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+
+    <!-- Google Fonts for a more professional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        h1, h2, h3, h4 {
+            color: #343a40;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        h2 {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        
+
+        /* Parent container for centering the content */
+        .container {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .chart-container {
+            width: 70%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .comments-container {
+            width: 70%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #sentimentChart {
+            width: 100% !important;
+            height: 300px !important;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            display: none;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f1f1f1;
+        }
+
+        /* Style the select dropdown */
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        /* Style the submit button */
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer styling */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #343a40;
+            color: white;
+            margin-top: 50px;
+        }
+
+               
+/* Sidebar styles */
+.sidebar {
+  width: 200px;
+  background-color: #222;
+  height: 100vh;
+  padding-top: 20px;
+  position: fixed;
+  color: #fff;
+}
+
+.sidebar h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.sidebar a {
+  display: block;
+  padding: 15px;
+  color: #ccc;
+  text-decoration: none;
+  margin: 10px 0;
+  transition: background 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+.sidebar .user-info {
+  margin: 20px;
+  text-align: center;
+}
+
+.sidebar .user-info i {
+  margin-right: 5px;
+}
+    </style>
+</head>
+<body>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <h3>Manage Dashboard</h3>
+        <div class="user-info">
+            {% if user.is_authenticated %}
+            <i class="fas fa-user"></i> Hai, {{ user.username }}
+            {% endif %}
+        </div>
+        <a href="{% url 'adminpage' %}">Home</a>
+        <a href="{% url 'admin_add' %}">Add Product</a>
+        <a href="{% url 'adminorders' %}">Order Items</a>
+        <a href="{% url 'stock' %}">Stock</a>
+        <a href="{% url 'sentiment' %}">Product Analysis</a>
+        <a href="{% url 'monthly_sales'%}">Report Generation</a>
+        <a href="{% url 'user_logout' %}">Log out</a>
+        
+    </div>
+    <div class="header">
+        <a href="{% url 'adminpage' %}" class="back-link">Back</a>
+      </div>
+    <h1>Sentiment Analysis for Products</h1>
+
+    <form method="GET" style="text-align:center; margin-bottom: 20px;">
+        <label for="product">Select Product:</label>
+        <select name="product" id="product">
+            <option value="">Select a product</option>
+            {% for product in products %}
+                <option value="{{ product.id }}" {% if selected_product_id == product.id|stringformat:"s" %}selected{% endif %}>{{ product.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if sentiment_data %}
+        <h2>Sentiment Analysis</h2>
+
+        <!-- Centered Chart Section -->
+        <div class="container">
+            <div class="chart-container">
+                <canvas id="sentimentChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Centered Comments Section -->
+        <h2>Comments Distribution</h2>
+        <div class="comments-container">
+            
+
+            <h4>Positive Comments</h4>
+            <table id="positiveTable">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comment in positive_comments %}
+                        <tr>
+                            <td>{{ comment.user.username }}</td>
+                            <td>{{ comment.comment }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No positive comments.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h4>Negative Comments</h4>
+            <table id="negativeTable">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comment in negative_comments %}
+                        <tr>
+                            <td>{{ comment.user.username }}</td>
+                            <td>{{ comment.comment }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No negative comments.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h4>Neutral Comments</h4>
+            <table id="neutralTable">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comment in neutral_comments %}
+                        <tr>
+                            <td>{{ comment.user.username }}</td>
+                            <td>{{ comment.comment }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No neutral comments.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+<br>
+<br>
+<br><br>
+<br>
+<br><br>
+<br><br>
+<br>
+<br>
+<br><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+    <footer>
+        <p>Sentiment Analysis Dashboard | © 2024 Your Company</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('sentimentChart').getContext('2d');
+            var sentimentChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Positive', 'Negative', 'Neutral'],
+                    datasets: [{
+                        label: 'Sentiment Distribution',
+                        data: [
+                            {{ sentiment_data.Positive|default:"0" }},
+                            {{ sentiment_data.Negative|default:"0" }},
+                            {{ sentiment_data.Neutral|default:"0" }}
+                        ],
+                        backgroundColor: ['#4CAF50', '#F44336', '#FFC107']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onClick: function(event, elements) {
+                        // Hide all tables
+                        document.getElementById('positiveTable').style.display = 'none';
+                        document.getElementById('negativeTable').style.display = 'none';
+                        document.getElementById('neutralTable').style.display = 'none';
+
+                        if (elements.length > 0) {
+                            var clickedElementIndex = elements[0].index;
+                            var label = sentimentChart.data.labels[clickedElementIndex];
+
+                            if (label === 'Positive') {
+                                document.getElementById('positiveTable').style.display = 'table';
+                            } else if (label === 'Negative') {
+                                document.getElementById('negativeTable').style.display = 'table';
+                            } else if (label === 'Neutral') {
+                                document.getElementById('neutralTable').style.display = 'table';
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

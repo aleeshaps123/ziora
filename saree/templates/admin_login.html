@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Show Password Eye Icon</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<style>
+    .container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    border: 1px ;
+    border-radius: 5px solid #ccc;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.toggle-password i {
+    font-size: 18px;
+    color: #666;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #333;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
+.header {
+  background-color: #333;
+  padding: 10px;
+  text-align: left; /* Center the link */
+}
+
+.back-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold; /* Make the text bold */
+  display: inline-block; /* Display as block element to make it behave like a button */
+  padding: 8px 16px; /* Add padding to make it look like a button */
+  border-radius: 5px; /* Add border radius to make it look like a button */
+  background-color: #333; /* Change background color to darker shade */
+}
+
+.back-link:hover {
+  text-decoration: underline;
+  background-color: #ccc; /* Darker shade on hover */
+}
+</style>
+<body>
+    <div class="header">
+        <a href="{% url 'index' %}" class="back-link">Back</a>
+      </div>
+    <div class="container">
+        <h2>Admin Login</h2>
+        <form method="post" action="{% url 'admin_login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <div style="position: relative;">
+                <input type="password" id="password" name="password" required>
+                <span toggle="#password" class="field-icon toggle-password"><i class="far fa-eye"></i></span>
+            </div>
+
+            <input type="submit" value="Login">
+            {% if error_message %}
+            <p class="error">{{ error_message }}</p>
+            {% endif %}
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordField = document.querySelector('#password');
+            const togglePassword = document.querySelector('.toggle-password');
+
+            togglePassword.addEventListener('click', function () {
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        });
+    </script>
+</body>
+</html>

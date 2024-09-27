@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Purchase Order</title>
+    <!-- Add any necessary CSS or styling here -->
+</head>
+<body>
+    <h2>Update Purchase Order Status</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="status">Order Status:</label>
+        <select name="status" id="status">
+            <option value="Pending">Pending</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+        <button type="submit">Update Status</button>
+    </form>
+</body>
+</html>

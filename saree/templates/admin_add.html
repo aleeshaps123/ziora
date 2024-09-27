@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<style>
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  display: flex;
+  
+  background-image:url('https://static.wixstatic.com/media/9d85d9_ff5162603cd44e23884973c17c16cdbe~mv2.webp')
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  background-color: #222;
+  height: 100vh;
+  padding-top: 20px;
+  position: fixed;
+  color: #fff;
+}
+
+.sidebar h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 15px;
+  color: #ccc;
+  text-decoration: none;
+  margin: 10px 0;
+  transition: background 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+.sidebar .user-info {
+  margin: 20px;
+  text-align: center;
+}
+
+.sidebar .user-info i {
+  margin-right: 5px;
+}
+
+.main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 20px;
+}
+
+/* Form styling */
+h1 {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.cancel-link {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.cancel-link:hover {
+  text-decoration: underline;
+}
+
+</style>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h3>Manage Dashboard</h3>
+  <div class="user-info">
+      {% if user.is_authenticated %}
+      <i class="fas fa-user"></i> Hai, {{ user.username }}
+      {% endif %}
+  </div>
+  <a href="{% url 'admin_add' %}">Add Product</a>
+  <a href="{% url 'adminorders' %}">Order Items</a>
+  <a href="{% url 'stock' %}">Stock</a>
+  <a href="{% url 'sentiment' %}">Product Analysis</a>
+  <a href="{% url 'monthly_sales'%}">Report Generation</a>
+  <a href="{% url 'user_logout' %}">Log out</a>
+  
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <h1>Add Product</h1>
+    <form method="post" action="{% url 'admin_add' %}" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        <div class="form-field">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" id="name" name="name" required class="form-input">
+        </div>
+
+        <div class="form-field">
+            <label for="description" class="form-label">Description:</label>
+            <input type="text" id="description" name="description" required class="form-input">
+        </div>
+
+        <div class="form-field">
+            <label for="price" class="form-label">Price:</label>
+            <input type="number" id="price" name="price" required class="form-input" min="0">
+        </div>
+
+        <div class="form-field">
+            <label for="category" class="form-label">Category:</label>
+            <input type="text" id="category" name="category" required class="form-input">
+        </div>
+
+        <div class="form-field">
+            <label for="quantity" class="form-label">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required class="form-input" min="0">
+        </div>
+
+        <div class="form-field">
+            <label for="reorderlevel" class="form-label">Reorder Level:</label>
+            <input type="number" id="reorderlevel" name="reorderlevel" required class="form-input" min="0">
+        </div>
+
+        <div class="form-field">
+            <label for="image" class="form-label">Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required class="form-input">
+        </div>
+
+        <input type="submit" value="Add">
+        <a href="{% url 'adminpage' %}" class="cancel-link">Cancel</a>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- Basic -->
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!-- Mobile Metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <!-- Site Metas -->
+      <meta name="keywords" content="" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="">
+      <title>Famms - Fashion HTML Template</title>
+      <!-- bootstrap core css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+      <!-- font awesome style -->
+      <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
+      <!-- Custom styles for this template -->
+      <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+      <!-- responsive style -->
+      <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+   </head>
+   <body>
+      <div class="hero_area">
+         <!-- header section strats -->
+         <header class="header_section" style="background: linear-gradient(135deg, #d2b5b5 0%, #eaeaea 100%); padding: 15px 0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg custom_nav-container">
+                    <!-- Brand Logo -->
+                    <a class="navbar-brand" href="{% url 'index' %}">
+                        <img  width="200px" src="{% static 'images/logo1.png' %}" alt="Logo" style="max-height: 80px;padding-right: 70px;"/>
+                    </a>
+                    <!-- Toggle Button for Mobile View -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+        
+                    <!-- Navbar Links -->
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Home Link -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'index' %}" style="font-weight: 600; color: #333; transition: color 0.3s; padding-left: 20px;">Home</a>
+                            </li>
+                    
+                            <!-- Pages Links -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about' %}" style="font-weight: 600; color: #333; transition: color 0.3s;">About</a>
+                            </li>
+                    
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'products' %}" style="font-weight: 600; color: #333; transition: color 0.3s;">Products</a>
+                            </li>
+                    
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'contact' %}" style="font-weight: 600; color: #333; transition: color 0.3s;">Contact</a>
+                            </li>
+                    
+                            <!-- Search Form -->
+                            <li class="nav-item">
+                                <form method="GET" action="{% url 'search' %}" style="position: relative; width: 200px;">
+                                    <input type="text" name="query" placeholder="Search products..."
+                                        style="width: 100%; padding: 12px 30px 12px 20px; border-radius: 25px; border: 1px solid #c8b1b1; outline: none; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); font-size: 16px; transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease; border-color: #007bff;"
+                                        onfocus="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)'; this.style.borderColor='#0056b3';"
+                                        onblur="this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'; this.style.borderColor='#ddd';"/>
+                                    <button type="submit"
+                                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; cursor: pointer; transition: opacity 0.3s ease;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#007bff" viewBox="0 0 24 24"
+                                        style="transition: fill 0.3s ease;padding-bottom: 12px;">
+                                        <path d="M23.384,21.619,16.7,14.935A9.253,9.253,0,1,0,14.935,16.7l6.684,6.684a1.065,1.065,0,1,0,1.766-1.766ZM9.255,16.38a7.125,7.125,0,1,1,7.125-7.125A7.125,7.125,0,0,1,9.255,16.38Z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </li>
+                    
+                            <!-- Wishlist Icon -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'view_to_wishlist' %}" style="position: relative; color: #f70f0f;">
+                                    <i class="fas fa-heart" style="font-size: 1.5em;"></i>
+                                </a>
+                            </li>
+
+                            <!-- Cart Icon -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'cart' %}" style="position: relative; color: #f21010;">
+                                    <i class="fas fa-shopping-cart" style="font-size: 1.5em; "></i>
+                                </a>
+                            </li>
+
+                    
+                            <!-- Login/Logout Dropdown -->
+                            {% if user.is_authenticated %}
+                            <!-- Track Order Button (Visible only for logged-in users) -->
+                            
+                    
+                            <li class="nav-item" style="padding-left: 50px">
+                                <a class="nav-link" href="{% url 'user_logout' %}" style="background: transparent; border: 1px solid #007bff; border-radius: 20px; padding: 5px 15px; color: #007bff; font-weight: 600; transition: background 0.3s, color 0.3s;">Logout</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'order_list_and_detail' %}" 
+                                   style="font-weight: 600; color: white; background-color: #bb5b3e; padding: 10px 20px; border-radius: 5px; transition: background-color 0.3s ease, color 0.3s ease; text-align: center; display: inline-block; border: none; margin-left: 50px;">
+                                   Track_Order
+                                </a>
+                            </li>
+                            
+                            
+                            {% else %}
+                            <li class="nav-item" style="padding-left: 50px">
+                                <a class="nav-link" href="{% url 'user_login' %}" style="background: transparent; border: 1px solid #007bff; border-radius: 20px; padding: 5px 15px; color: #007bff; font-weight: 600; transition: background 0.3s, color 0.3s;">Login</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                </nav>
+            </div>
+        </header>
+         <!-- end header section -->
+
+      <section>
+        <div class="search-results">
+          {% if products %}
+            <h2>Search Results for "{{ query }}"</h2>
+            <ul class="product-list">
+              {% for product in products %}
+                <li class="product-item">
+                  <img src="{{ product.image.url }}" alt="{{ product.name }} Image">
+                  <h3>{{ product.name }}</h3>
+                  <p>Price: {{ product.price }}</p>
+                  <form method="post" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="add-to-cart">Add to Cart</button>
+                  </form>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="no-results">
+              <p>No products found for "{{ query }}".</p>
+              <a href="{% url 'index' %}" class="back-link">Back to Home</a>
+            </div>
+          {% endif %}
+        </div>
+      </section>
+      <style>
+        body {
+          background-image: url('https://nirmalcreations.in/wp-content/uploads/2021/10/Kanjeevaram-Silk-Sarees-known-as-the-Queen-of-Sarees_5-1.jpg');
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+          margin: 0;
+          padding: 0;
+        }
+    
+        .header {
+          background-color: #333;
+          padding: 15px 0;
+          text-align: center;
+        }
+    
+        .header .back-link {
+          color: #fff;
+          text-decoration: none;
+          font-weight: bold;
+          padding: 10px 20px;
+          border-radius: 5px;
+          background-color: #555;
+        }
+    
+        .header .back-link:hover {
+          background-color: #444;
+        }
+    
+        .search-results {
+          max-width: 1200px;
+          margin: 20px auto;
+          padding: 20px;
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 10px;
+        }
+    
+        .search-results h2 {
+          text-align: center;
+          margin-bottom: 30px;
+          color: #333;
+        }
+    
+        .product-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          list-style: none;
+          padding: 0;
+        }
+    
+        .product-item {
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          width: calc(33.333% - 20px); /* Three products per row with gap adjustment */
+          box-sizing: border-box;
+          text-align: center;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between; /* Ensures space is distributed evenly */
+        }
+    
+        .product-item:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+    
+        .product-item img {
+          max-width: 100%;
+          height: 200px; /* Fixed height for uniform image sizes */
+          object-fit: cover; /* Ensures images cover the box without distortion */
+          border-radius: 10px;
+          margin-bottom: 15px;
+        }
+    
+        .product-item h3 {
+          margin: 15px 0;
+          color: #333;
+        }
+    
+        .product-item p {
+          color: #666;
+          margin: 5px 0;
+        }
+    
+        .add-to-cart {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          text-align: center;
+          text-decoration: none;
+          font-size: 16px;
+        }
+    
+        .add-to-cart:hover {
+          background-color: #0056b3;
+        }
+    
+        .no-results {
+          text-align: center;
+          padding: 20px;
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 10px;
+          margin: 20px auto;
+          max-width: 400px;
+        }
+    
+        .no-results p {
+          margin: 0;
+          color: #333;
+        }
+    
+        .no-results .back-link {
+          display: inline-block;
+          margin-top: 20px;
+        }
+      </style>
+       <!-- footer start -->
+       <footer style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 40px 0; color: #333;">
+        <div class="container">
+            <div class="row">
+                <!-- Logo and Contact Information -->
+                <div class="col-md-4">
+                    
+                    <div class="information_f">
+                        <p><strong>ADDRESS:</strong> 28 White Tower, Street Name, New York City, USA</p>
+                        <p><strong>TELEPHONE:</strong> +91 987 654 3210</p>
+                        <p><strong>EMAIL:</strong> yourmain@gmail.com</p>
+                    </div>
+                    <div class="social-icons" style="margin-top: 20px;">
+                        <a href="#" class="social-icon" aria-label="Facebook">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 12.1c0-5.5-4.5-10-10-10S2 6.6 2 12.1c0 5.1 3.9 9.3 8.9 9.9v-7h-2.6V12h2.6v-1.9c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.1.1 2.4.2v2.7h-1.7c-1.4 0-1.7.7-1.7 1.6V12h3.2l-.4 3.1h-2.8v7c5.1-.6 8.9-4.8 8.9-9.9z" fill="#4267B2"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Twitter">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23 3a10.4 10.4 0 01-2.8.8A4.8 4.8 0 0022.4 1a9.6 9.6 0 01-3.1 1.2 4.8 4.8 0 00-8.2 4.4c0 .4 0 .8.1 1.1A13.6 13.6 0 011.7 2.4a4.8 4.8 0 001.5 6.4A4.7 4.7 0 01.9 8v.1a4.8 4.8 0 003.9 4.8 4.7 4.7 0 01-2.1.1c.6 1.8 2.3 3.2 4.3 3.3a9.6 9.6 0 01-5.9 2.1c-.4 0-.8 0-1.2-.1a13.6 13.6 0 007.4 2.2c8.8 0 13.6-7.3 13.6-13.6v-.6A9.8 9.8 0 0023 3z" fill="#1DA1F2"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2.2c-6 0-10.8 4.7-10.8 10.8s4.8 10.8 10.8 10.8S22.8 19 22.8 12 18 2.2 12 2.2zm0 19.6c-4.9 0-8.8-3.9-8.8-8.8s3.9-8.8 8.8-8.8 8.8 3.9 8.8 8.8-3.9 8.8-8.8 8.8zm5.2-12.2c0 .6-.5 1.1-1.1 1.1s-1.1-.5-1.1-1.1.5-1.1 1.1-1.1 1.1.5 1.1 1.1zm-5.2 2.9c-2.4 0-4.4 1.9-4.4 4.4s1.9 4.4 4.4 4.4 4.4-1.9 4.4-4.4-2-4.4-4.4-4.4zM20.4 3h-2.8v2.8H8.4V3H5.6c-.6 0-1 .4-1 1v2.8h-2.8c-.6 0-1 .4-1 1v2.8c0 .6.4 1 1 1h2.8v2.8c0 .6.4 1 1 1h2.8v-2.8h6.4v2.8c0 .6.4 1 1 1h2.8c.6 0 1-.4 1-1v-2.8c0-.6-.4-1-1-1z" fill="#E4405F"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <!-- Menu Links -->
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="widget_menu">
+                                <h3 style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px;">Menu</h3>
+                                <ul style="list-style-type: none; padding: 0;">
+                                    <li><a href="{% url 'index' %}" style="color: #007bff; text-decoration: none;">Home</a></li>
+                                    <li><a href="{% url 'about' %}" style="color: #007bff; text-decoration: none;">About</a></li>
+                                    <li><a href="{% url 'contact' %}" style="color: #007bff; text-decoration: none;">Contact</a></li>
+                                    <li><a href="{% url 'products' %}" style="color: #007bff; text-decoration: none;">Products</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="widget_menu">
+                                <h3 style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px;">Account</h3>
+                                <ul style="list-style-type: none; padding: 0;">
+                                    <li><a href="{% url 'profile_update' %}" style="color: #007bff; text-decoration: none;">Account</a></li>
+                                    <li><a href="{% url 'view_to_wishlist' %}" style="color: #007bff; text-decoration: none;">Wishlist</a></li>
+                                    <li><a href="{% url 'user_login' %}" style="color: #007bff; text-decoration: none;">Login</a></li>
+                                    <li><a href="{% url 'user_register' %}" style="color: #007bff; text-decoration: none;">Register</a></li>
+                                    <li><a href="{% url 'products' %}" style="color: #007bff; text-decoration: none;">Shopping</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Back to Top Button -->
+            <div class="back-to-top" style="text-align: center; margin-top: 30px;">
+                <a href="#" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Back to Top</a>
+            </div>
+        </div>
+    </footer>
+    
+          <!-- footer end -->
+          <div class="cpy_">
+             <p>© 2024 All Rights Reserved By Aleesha maria george</a></p>
+          </div>
+          <!-- jQuery -->
+          <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+          <!-- popper js -->
+          <script src="{% static 'js/popper.min.js' %}"></script>
+          <!-- bootstrap js -->
+          <script src="{% static 'js/bootstrap.js' %}"></script>
+          <!-- custom js -->
+          <script src="{% static 'js/custom.js' %}"></script>
+       </body>
+    </html>
+    

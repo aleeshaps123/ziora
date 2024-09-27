@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* Reset default margin and padding */
+        body, h1, h2, h3, p, ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 0;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #222;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            color: #fff;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            color: #ccc;
+            text-decoration: none;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .sidebar .user-info {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .sidebar .user-info i {
+            margin-right: 5px;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+            width: calc(100% - 260px);
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .view-details-link {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .view-details-link:hover {
+            color: #0056b3;
+        }
+
+        form select {
+            padding: 5px;
+        }
+
+        form button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styles for cancelled rows */
+        .canceled {
+            background-color: #f8d7da; /* Light red background */
+            color: #721c24; /* Dark red text */
+        }
+
+
+        .sidebar a.index {
+    display: block; /* Makes it a block element */
+    text-align: center; /* Centers the text */
+    background-color: transparent; /* Background to match sidebar */
+    color: white; /* Text color */
+    padding: 10px; /* Padding around the link */
+    margin: 10px 0; /* Spacing above and below */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.sidebar a.index:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Slightly lighter on hover */
+    color: white; /* Keeps text color white on hover */
+}
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h3>Manage Dashboard</h3>
+        <div class="user-info">
+            {% if request.user.is_authenticated %}
+            <i class="fas fa-user"></i> Hai, {{ user.username }}
+           
+            {% endif %}
+        </div>
+        {% if not request.user.is_superuser %}
+        <a href="{% url 'index' %}">Home</a>
+        {% endif %}
+        {% if request.user.is_superuser %}
+        <a href="{% url 'adminpage' %}">Home</a>
+        <a href="{% url 'admin_add' %}">Add Product</a>
+        <a href="{% url 'adminorders' %}">Order Items</a>
+        <a href="{% url 'stock' %}">Stock</a>
+        <a href="{% url 'sentiment' %}">Product Analysis</a>
+        <a href="{% url 'monthly_sales'%}">Report Generation</a>
+        <a href="{% url 'user_logout' %}">Log out</a>
+        {% endif %}
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Orders List</h1>
+    
+            {% if request.user.is_superuser %}
+            <!-- Filter Dropdown -->
+            <form method="GET" action="">
+                <label for="status-filter">Filter by Status: </label>
+                <select name="status" id="status-filter" onchange="this.form.submit()">
+                    <option value="all" {% if selected_status == 'all' %}selected{% endif %}>All</option>
+                    <option value="processing" {% if selected_status == 'processing' %}selected{% endif %}>Processing</option>
+                    <option value="out_for_delivery" {% if selected_status == 'out_for_delivery' %}selected{% endif %}>Out for Delivery</option>
+                    <option value="shipped" {% if selected_status == 'shipped' %}selected{% endif %}>Shipped</option>
+                    <option value="delivered" {% if selected_status == 'delivered' %}selected{% endif %}>Delivered</option>
+                    <option value="canceled" {% if selected_status == 'canceled' %}selected{% endif %}>Canceled</option>
+                </select>
+            </form>
+            {% endif %}
+        </div>
+    
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Full Name</th>
+                    <th>Address</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    {% if request.user.is_superuser %}
+                    <th>Update Status</th>
+                    {% endif %}
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr class="{{ order.status }} animate_animated animate_fadeInUp">
+                    <td>OD24M{{ order.id }}</td>
+                    <td>{{ order.fullname }}</td>
+                    <td>{{ order.address }}, {{ order.city }}, {{ order.postal_code }}</td>
+                    <td>${{ order.total_amount }}</td>
+                    <td>{{ order.get_status_display }}</td>
+    
+                    {% if request.user.is_superuser %}
+                    <td>
+                        <form action="{% url 'update_status' order.id %}" method="post">
+                            {% csrf_token %}
+                            <select name="status" {% if order.status == "cancelled" %}disabled{% endif %}>
+                                <option value="processing">Processing</option>
+                                <option value="out_for_delivery">Out for Delivery</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                            </select>
+                            <button type="submit" {% if order.status == "cancelled" %}disabled{% endif %}>Update</button>
+                        </form>
+                    </td>
+                    {% endif %}
+    
+                    <td><a href="{% url 'order_detail' order.id %}" class="view-details-link">View Details</a></td>
+    
+                    {% if not request.user.is_superuser and order.status == 'processing' %}
+                    <td>
+                        <form action="{% url 'cancel_order' order.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="cancel-button">Cancel Order</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

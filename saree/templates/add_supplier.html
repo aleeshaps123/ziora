@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>add suppliers</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+
+</head>
+<style>
+form {
+    width:100% ;
+    max-width: 600px;
+    padding: 20px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0,0,0,0,1);
+
+}
+
+form p {
+    margin-bottom: 15px;
+
+}
+
+form label{
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+form iput[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form textarea{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size:1rem;
+}
+
+form button[type="submit"]{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #009879;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button[type="submit"]:hover{
+    background-color:#009879;
+}
+
+form input:focus,
+form textarea:focus{
+    border-color: #009879;
+    outline: none;
+    box-shadow: 0 0 5px #009879(0,123,255,0.5);
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bolder;
+    background-color: #ccc;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  
+  padding: 20px;
+ 
+  background-image:url('https://static.wixstatic.com/media/9d85d9_ff5162603cd44e23884973c17c16cdbe~mv2.webp')
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.back-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold; /* Make the text bold */
+  display: inline-block; /* Display as block element to make it behave like a button */
+  padding: 8px 16px; /* Add padding to make it look like a button */
+  border-radius: 5px; /* Add border radius to make it look like a button */
+  background-color: #333; /* Change background color to darker shade */
+}
+
+.back-link:hover {
+  text-decoration: underline;
+  background-color: #ccc; /* Darker shade on hover */
+}
+</style>
+<body>
+    <div class="header">
+        <!-- Your header content -->
+    <a href="{% url 'adminpage' %}" class="back-link">Back</a>
+           
+    </div>
+    <h1>Add Suppliers</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Supplier</button>
+</form>
+</body>
+</html>

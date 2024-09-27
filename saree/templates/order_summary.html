@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <title>Invoice - ZIORA</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 1cm;
+
+      @frame footer {
+        -pdf-frame-content: footerContent;
+        bottom: 0cm;
+        margin-left: 9cm;
+        margin-right: 9cm;
+        height: 1cm;
+      }
+    }
+
+    body {
+      font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+      color: #555;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+
+    .invoice-box {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      border: 1px solid #eee;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+      font-size: 16px;
+      line-height: 24px;
+      color: #555;
+    }
+
+    .invoice-box table {
+      width: 100%;
+      line-height: inherit;
+      text-align: left;
+      border-collapse: collapse;
+    }
+
+    .invoice-box table td {
+      padding: 8px;
+      vertical-align: top;
+    }
+
+    .invoice-box table tr.top table td {
+      padding-bottom: 20px;
+    }
+
+    .invoice-box table tr.top table td.title {
+      font-size: 30px;
+      line-height: 45px;
+      color: #333;
+    }
+
+    .invoice-box table tr.information table td {
+      padding-bottom: 40px;
+    }
+
+    .invoice-box table tr.heading td {
+      background: #eee;
+      border-bottom: 1px solid #ddd;
+      font-weight: bold;
+    }
+
+    .invoice-box table tr.details td {
+      padding-bottom: 20px;
+    }
+
+    .invoice-box table tr.item td {
+      border-bottom: 1px solid #eee;
+    }
+
+    .invoice-box table tr.item.last td {
+      border-bottom: none;
+    }
+
+    .invoice-box table tr.total td:nth-child(2) {
+      border-top: 2px solid #eee;
+      font-weight: bold;
+    }
+
+    .total-amount {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    .download-button,
+    .continue-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: #fff;
+      background-color: #333;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .continue-button {
+      background-color: #28a745;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .invoice-box table tr.top table td,
+      .invoice-box table tr.information table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+      }
+    }
+
+    .rtl {
+      direction: rtl;
+      font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+
+    .rtl table {
+      text-align: right;
+    }
+
+    .rtl table tr td:nth-child(2) {
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="invoice-box">
+    <table cellpadding="0" cellspacing="0">
+      <tr class="top">
+        <td colspan="2">
+          <table>
+            <tr>
+              <td class="title">
+                <h2>ZIORA-COLLECTIONS</h2>
+              </td>
+              <td>
+                <p> <p>Order Date: {{ order_date }}</p></p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr class="information">
+        <td colspan="2">
+          <table>
+            <tr>
+              <td>
+                <strong>Customer:</strong> {{ fullname }}<br>
+                <strong>Shipment Address:</strong> {{ address }}<br>
+                
+                <strong>Phone Number:</strong>{{phone_number}}<br>
+              </td>
+              
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr class="information">
+        <td colspan="2">
+          <h3>Product Details</h3>
+          {% for item in product_details %}
+          <p>{{ item.product }} - Quantity: {{ item.quantity }}</p>
+          {% endfor %}
+        </td>
+      </tr>
+      
+
+      <tr class="information">
+        <td colspan="2">
+          <p><strong>Order Status:</strong> Placed</p>
+        </td>
+      </tr>
+    </table>
+
+    <p class="total-amount">Total Amount: Rs.{{ total_amount }}</p>
+    <button class="download-button" onclick="window.print()">Download Invoice</button>
+    <a href="{% url 'index' %}" class="continue-button">Continue Shopping</a>
+  </div>
+</body>
+</html>

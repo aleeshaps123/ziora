@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Sellers</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+   
+</head>
+<style>
+    /* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+thead {
+    background-color: #333;
+    color: #fff;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+
+.header {
+  background-color: #333;
+  padding: 10px;
+  text-align: center; /* Center the link */
+}
+
+.back-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold; /* Make the text bold */
+  display: inline-block; /* Display as block element to make it behave like a button */
+  padding: 8px 16px; /* Add padding to make it look like a button */
+  border-radius: 5px; /* Add border radius to make it look like a button */
+  background-color: #333; /* Change background color to darker shade */
+}
+
+.back-link:hover {
+  text-decoration: underline;
+  background-color: #ccc; /* Darker shade on hover */
+}
+
+
+
+</style>
+<body>
+    <div class="header">
+        <a href="{% url 'adminpage' %}" class="back-link">Back</a>
+      </div>
+    <h1>Manage Sellers</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for seller in sellers %}
+            <tr>
+                <td>{{ seller.id }}</td>
+                <td>{{ seller.user.username }}</td>
+                <td>{{ seller.user.email }}</td>
+                <td>{{ seller.created_at }}</td>
+                <td>
+                    <a href="{% url 'edit_seller' seller.pk %}">Edit</a> |
+                    <a href="{% url 'delete_seller' seller.pk %}" onclick="return confirm('Are you sure you want to delete this seller?');">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+            
+    
+        </tbody>
+    </table>
+</body>
+</html>
+

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Product</title>
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form div {
+    margin-bottom: 20px;
+}
+
+form img {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.cancel-link {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.cancel-link:hover {
+    text-decoration: underline;
+}
+</style>
+<body>
+    <h1>Edit Product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <!-- Display the image if it exists -->
+            {% if product.image %}
+                <!-- Display the image using an img tag -->
+                <img src="{{ product.image.url }}" alt="Product Image">
+            {% else %}
+                <!-- Display a message if the image is not available -->
+                <p>No image available</p>
+            {% endif %}
+        </div>
+        <!-- Display the rest of the form fields -->
+        {{ form.as_p }}
+        <input type="submit" value="Save Changes">
+        <a href="{% url 'adminpage' %}" class="cancel-link">Cancel</a>
+    </form>
+    
+</body>
+</html>

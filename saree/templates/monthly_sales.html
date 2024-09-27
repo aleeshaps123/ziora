@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Sales Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .container {
+            width: 70%;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+            align-self: center;
+        }
+
+        input[type="month"] {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        tfoot tr td {
+            font-weight: bold;
+        }
+
+        
+/* Sidebar styles */
+.sidebar {
+  width: 200px;
+  background-color: #222;
+  height: 100vh;
+  padding-top: 20px;
+  position: fixed;
+  color: #fff;
+}
+
+.sidebar h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 15px;
+  color: #ccc;
+  text-decoration: none;
+  margin: 10px 0;
+  transition: background 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+.sidebar .user-info {
+  margin: 20px;
+  text-align: center;
+}
+
+.sidebar .user-info i {
+  margin-right: 5px;
+}
+    </style>
+</head>
+<body>
+
+     <!-- Sidebar -->
+     <div class="sidebar">
+        <h3>Manage Dashboard</h3>
+        <div class="user-info">
+            {% if user.is_authenticated %}
+            <i class="fas fa-user"></i> Hai, {{ user.username }}
+            {% endif %}
+        </div>
+        <a href="{% url 'adminpage' %}">Home</a>
+        <a href="{% url 'admin_add' %}">Add Product</a>
+        <a href="{% url 'adminorders' %}">Order Items</a>
+        <a href="{% url 'stock' %}">Stock</a>
+        
+        <a href="{% url 'sentiment' % }">Product Analysis</a>
+        <a href="{% url 'monthly_sales'%}">Report Generation</a>
+        <a href="{% url 'user_logout' %}">Log out</a>
+        
+    </div>
+
+    <div class="container">
+        <h1>Sales Report</h1>
+
+        <!-- Month and Year Selection Form -->
+        <form method="GET" action="{% url 'monthly_sales' %}">
+            <label for="month">Select Month:</label>
+            <input type="month" id="month" name="month" value="{{ month }}">
+            <button type="submit">Generate Report</button>
+            <button type="submit" name="export" value="true">Export to Excel</button>
+        </form>
+
+        <h2>Sales Report for {{ month }}</h2>
+        <p>Total Sales: {{ total_sales }}</p>
+
+        <h2>Product-wise Sales</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Quantity Sold</th>
+                    <th>Total Sales Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in product_sales %}
+                <tr>
+                    <td>{{ item.product__name }}</td>
+                    <td>${{ item.unit_price }}</td>
+                    <td>{{ item.total_quantity }}</td>
+                    <td>${{ item.total_amount }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No sales data available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

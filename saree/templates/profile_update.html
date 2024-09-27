@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Profile</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Add background image and style */
+    body {
+      background-image: url(''); /* Replace with actual saree image URL */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      
+  background-image:url('https://static.wixstatic.com/media/9d85d9_ff5162603cd44e23884973c17c16cdbe~mv2.webp')
+    }
+
+    .form-container {
+      max-width: 600px;
+      width: 100%;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to the form */
+    }
+
+    .header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .back-link {
+      background-color: #333; /* Set button background color */
+      color: white; /* Set text color */
+      text-decoration: none; /* Remove underline */
+      padding: 8px 12px; /* Add padding */
+      border: none; /* Remove border */
+      border-radius: 3px; /* Add border radius */
+      cursor: pointer; /* Change cursor to pointer on hover */
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .back-link:hover {
+      background-color: #ccc; /* Change button background color on hover */
+    }
+
+    .btn.btn-primary {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn.btn-primary:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <!-- Conditionally render Home link based on user type -->
+    {% if request.user.is_superuser %}
+    <a href="{% url 'adminpage' %}" class="back-link"> Home</a>
+    {% else %}
+    <a href="{% url 'index' %}" class="back-link">Home</a>
+    {% endif %}
+  </div>
+
+  <div class="form-container">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_username">Username</label>
+        {{ form.username }}
+      </div>
+
+      <!-- Other form fields if necessary -->
+
+      <h3>Change Password</h3>
+      <div class="form-group">
+        <label for="id_old_password">Old Password</label>
+        {{ password_form.old_password }}
+      </div>
+      <div class="form-group">
+        <label for="id_new_password1">New Password</label>
+        {{ password_form.new_password1 }}
+      </div>
+      <div class="form-group">
+        <label for="id_new_password2">Confirm New Password</label>
+        {{ password_form.new_password2 }}
+      </div>
+
+      <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

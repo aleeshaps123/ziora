@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Comments</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .star {
+            color: #d3d3d3; /* Gray color for unfilled stars */
+        }
+        .star.filled {
+            color: #ffd700; /* Gold color for filled stars */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+    </div>
+
+    <h1>Comments for {{ product.name }}</h1>
+
+    <div id="reviews">
+        {% for review in reviews %}
+            <div class="review">
+                <strong>{{ review.user.username }}</strong>
+                <p>{{ review.comment }}</p>
+                <p>Rating: 
+                    <div class="rating">
+                        {% for i in star_range %}
+                            <span class="star {% if i <= review.rating %}filled{% endif %}">&#9733;</span>
+                        {% endfor %}
+                    </div>
+                </p>
+                <small>{{ review.created_at }}</small>
+                <!-- Delete button -->
+                {% if user == review.user %}
+                    <form action="{% url 'delete_review' review.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No reviews yet. Be the first to review!</p>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

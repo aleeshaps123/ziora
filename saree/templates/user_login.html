@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<style>
+    /* Resetting default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-image: url('https://nirmalcreations.in/wp-content/uploads/2021/10/Kanjeevaram-Silk-Sarees-known-as-the-Queen-of-Sarees_5-1.jpg');
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .show-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .errorlist {
+      color: red;
+      margin-bottom: 20px;
+    }
+
+    .register-message {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+        margin: 50px auto;
+      }
+    }
+
+    .header {
+      background-color: #333;
+      padding: 10px;
+      text-align: left; /* Center the link */
+    }
+
+    .back-link {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold; /* Make the text bold */
+      display: inline-block; /* Display as block element to make it behave like a button */
+      padding: 8px 16px; /* Add padding to make it look like a button */
+      border-radius: 5px; /* Add border radius to make it look like a button */
+      background-color: #333; /* Change background color to darker shade */
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+      background-color: #ccc; /* Darker shade on hover */
+    }
+
+    .forgot-password-message {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .forgot-password-link {
+      color: #333;
+      text-decoration: underline;
+    }
+</style>
+<body>
+  <div class="header">
+    <a href="{% url 'index' %}" class="back-link">Back</a>
+  </div>
+  <div class="container">
+    <h1>Please Login</h1>
+
+    <form method="post" class="form">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" class="form-control" required>
+        <span class="show-password" onclick="showPassword('password')"><i class="fas fa-eye"></i></span>
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+    <!-- Validation errors display -->
+    {% if form.errors %}
+      <div class="errorlist">
+        <ul>
+          {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              <li>{{ field }}: {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- Register message -->
+    <p class="register-message">Create an Account  <a href="{% url 'user_register' %}" class="register-link">Register here</a></p>
+    
+    <!-- Forgot password link -->
+    <p class="forgot-password-message">Forgot your password? <a href="{% url 'password_reset' %}" class="forgot-password-link">Reset it here</a></p>
+  </div>
+
+  <script>
+    function showPassword(fieldId) {
+      var passwordInput = document.getElementById(fieldId);
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        document.querySelector('.show-password i').classList.remove('fa-eye');
+        document.querySelector('.show-password i').classList.      add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        document.querySelector('.show-password i').classList.remove('fa-eye-slash');
+        document.querySelector('.show-password i').classList.add('fa-eye');
+      }
+    }
+  </script>
+</body>
+</html>
+

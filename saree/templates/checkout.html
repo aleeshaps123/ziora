@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>Checkout Page</title>
+</head>  
+<style>
+/* Resetting default browser styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  background-image: url('https://static.wixstatic.com/media/9d85d9_ff5162603cd44e23884973c17c16cdbe~mv2.webp');
+  background-size: cover;
+}
+
+.checkout-form {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.form-group {
+  flex: 1 1 48%; /* Ensures the fields are 2 in a row on larger screens */
+}
+
+.submit-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.submit-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #555;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.header {
+  background-color: #f2f2f2;
+  padding: 10px;
+  width: 100%;
+}
+
+.back-link {
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.back-link:hover {
+  background-color: #ccc;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+  .form-group {
+    flex: 1 1 100%; /* Make form groups full width on smaller screens */
+  }
+}
+</style>
+
+<body>
+  <div class="header">
+    <a href="{% url 'cart' %}" class="back-link">Back</a>
+  </div>
+  
+  <div class="checkout-form">
+    <h2>Checkout</h2>
+    <form method="post" action="{% url 'checkout' %}">
+      {% csrf_token %}
+      <div class="form-group-wrapper">
+        <div class="form-group">
+          <label for="fullname">Full Name:</label>
+          <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input type="text" id="address" name="address" placeholder="Enter your address" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone_number">Phone Number:</label>
+          <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="city">City:</label>
+          <input type="text" id="city" name="city" placeholder="Enter your city" required>
+        </div>
+
+        <div class="form-group">
+          <label for="postal_code">Postal Code:</label>
+          <input type="text" id="postal_code" name="postal_code" placeholder="Enter your postal code" required>
+        </div>
+      </div>
+  
+      <p>Total Amount: Rs.{{ total_amount }}</p>
+      <button type="submit" class="submit-btn">Place Order</button>
+    </form>
+  </div>
+
+  <script>
+    var postalCodeInput = document.getElementById('postal_code');
+    postalCodeInput.addEventListener('input', function () {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+  </script>
+</body>
+</html>
