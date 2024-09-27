@@ -88,9 +88,10 @@ DATABASES= {
         'USER':'aleesha',
         'PASSWORD':'Aleesha200226',
         'HOST':'ziora-database.cx4s0swu26jn.eu-north-1.rds.amazonaws.com',
-        'PORT':'5432'
+        'PORT':'5432',
     }
 }
+
 
 
 # Password validation
