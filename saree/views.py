@@ -247,7 +247,7 @@ def checkout_view(request):
         message += f"Or Please click TRACK ORDER button in your Ziora account "
         message += "Best regards,\nZiora Team"
 
-        sender_email = 'your@email.com'  # Replace with your sender email
+        sender_email = 'aleeshasibi26@gmail.com'  # Replace with your sender email
         recipient_email = request.user.email  # Use the logged-in user's email address
         send_mail(subject, message, sender_email, [recipient_email], html_message=message)
 
@@ -992,13 +992,14 @@ from .models import Product, Review
 
 def product_comments(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    reviews = Review.objects.filter(product=product)  # Adjust as needed based on your model structure
+    reviews = Review.objects.filter(product=product) # Adjust as needed based on your model structure
+    star_range=range(1,6)
     context = {
         'product': product,
         'reviews': reviews,
+        'star_range':star_range
     }
     return render(request, 'product_comments.html', context)
-
 
 from django.shortcuts import render
 from .models import Product, Review

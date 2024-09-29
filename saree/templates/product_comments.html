@@ -12,11 +12,136 @@
         .star.filled {
             color: #ffd700; /* Gold color for filled stars */
         }
+
+        /* General styles for the body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* Header styles */
+.header {
+    background-color: #333;
+    padding: 20px;
+    color: white;
+    text-align: center;
+}
+
+/* Title style */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 30px;
+}
+
+/* Container for all reviews */
+#reviews {
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+/* Styling for individual review containers */
+.review {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Username styling */
+.review strong {
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Comment text styling */
+.review p {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Rating stars container */
+.rating {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* Filled stars */
+.star.filled {
+    color: #ffd700;
+}
+
+/* Unfilled stars */
+.star {
+    color: #d3d3d3;
+    font-size: 1.5em;
+}
+
+/* Date styling */
+.review small {
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+/* Delete button styling */
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    float: right;
+}
+
+/* Delete button hover effect */
+.delete-btn:hover {
+    background-color: #ff1a1a;
+}
+
+ 
+
+/* Responsive styling for mobile devices */
+@media (max-width: 600px) {
+    .review {
+        padding: 15px;
+    }
+    
+    .delete-btn {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+    
+    .star {
+        font-size: 1.3em;
+    }
+}
+
+    /* Back link */
+    .back-link {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 5px;
+        background-color: #333;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+        background-color: #ccc;
+    }
     </style>
 </head>
 <body>
     <div class="header">
-    </div>
+        <a href="{% url 'adminpage' %}" class="back-link">Back</a>
+      </div>
 
     <h1>Comments for {{ product.name }}</h1>
 
