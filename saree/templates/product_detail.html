@@ -1,158 +1,235 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-   <head>
-      <!-- Basic -->
-      <meta charset="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <!-- Mobile Metas -->
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-      <!-- Site Metas -->
-      <meta name="keywords" content="" />
-      <meta name="description" content="" />
-      <meta name="author" content="" />
-      <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="">
-      <title>Famms - Fashion HTML Template</title>
-      <!-- bootstrap core css -->
-      <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
-      <!-- font awesome style -->
-      <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
-      <!-- Custom styles for this template -->
-      <link href="{% static 'css/style.css' %}" rel="stylesheet" />
-      <!-- responsive style -->
-      <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
-      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-   </head>
-   <body>
-      <div class="hero_area">
-         <!-- header section strats -->
-         <header class="header_section" style="background: linear-gradient(135deg, #d2b5b5 0%, #eaeaea 100%); padding: 15px 0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <div class="container">
-                <nav class="navbar navbar-expand-lg custom_nav-container">
-                    <!-- Brand Logo -->
-                    <a class="navbar-brand" href="{% url 'index' %}">
-                        <img  width="200px" src="{% static 'images/logo1.png' %}" alt="Logo" style="max-height: 80px;padding-right: 70px;"/>
-                    </a>
-                    <!-- Toggle Button for Mobile View -->
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-        
-                    <!-- Navbar Links -->
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ml-auto">
-                            <!-- Home Link -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'index' %}" style="font-weight: 600; color: #333; transition: color 0.3s; padding-left: 20px;">Home</a>
-                            </li>
-                    
-                            <!-- Pages Links -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'about' %}" style="font-weight: 600; color: #333; transition: color 0.3s;">About</a>
-                            </li>
-                    
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'products' %}" style="font-weight: 600; color: #333; transition: color 0.3s;">Products</a>
-                            </li>
-                    
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'contact' %}" style="font-weight: 600; color: #333; transition: color 0.3s;">Contact</a>
-                            </li>
-                    
-                            <!-- Search Form -->
-                            <li class="nav-item">
-                                <form method="GET" action="{% url 'search' %}" style="position: relative; width: 200px;">
-                                    <input type="text" name="query" placeholder="Search products..."
-                                        style="width: 100%; padding: 12px 30px 12px 20px; border-radius: 25px; border: 1px solid #c8b1b1; outline: none; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); font-size: 16px; transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease; border-color: #007bff;"
-                                        onfocus="this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)'; this.style.borderColor='#0056b3';"
-                                        onblur="this.style.boxShadow='0 2px 4px rgba(0, 0, 0, 0.1)'; this.style.borderColor='#ddd';"/>
-                                    <button type="submit"
-                                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; cursor: pointer; transition: opacity 0.3s ease;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#007bff" viewBox="0 0 24 24"
-                                        style="transition: fill 0.3s ease;padding-bottom: 12px;">
-                                        <path d="M23.384,21.619,16.7,14.935A9.253,9.253,0,1,0,14.935,16.7l6.684,6.684a1.065,1.065,0,1,0,1.766-1.766ZM9.255,16.38a7.125,7.125,0,1,1,7.125-7.125A7.125,7.125,0,0,1,9.255,16.38Z"/>
-                                        </svg>
-                                    </button>
-                                </form>
-                            </li>
-                    
-                            <!-- Wishlist Icon -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'view_to_wishlist' %}" style="position: relative; color: #f70f0f;">
-                                    <i class="fas fa-heart" style="font-size: 1.5em;"></i>
-                                </a>
-                            </li>
-
-                            <!-- Cart Icon -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'cart' %}" style="position: relative; color: #f21010;">
-                                    <i class="fas fa-shopping-cart" style="font-size: 1.5em; "></i>
-                                </a>
-                            </li>
-
-                    
-                            <!-- Login/Logout Dropdown -->
-                            {% if user.is_authenticated %}
-                            <!-- Track Order Button (Visible only for logged-in users) -->
-                            
-                    
-                            <li class="nav-item" style="padding-left: 50px">
-                                <a class="nav-link" href="{% url 'user_logout' %}" style="background: transparent; border: 1px solid #007bff; border-radius: 20px; padding: 5px 15px; color: #007bff; font-weight: 600; transition: background 0.3s, color 0.3s;">Logout</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'order_list_and_detail' %}" 
-                                   style="font-weight: 600; color: white; background-color: #bb5b3e; padding: 10px 20px; border-radius: 5px; transition: background-color 0.3s ease, color 0.3s ease; text-align: center; display: inline-block; border: none; margin-left: 50px;">
-                                   Track_Order
-                                </a>
-                            </li>
-                            
-                            
-                            {% else %}
-                            <li class="nav-item" style="padding-left: 50px">
-                                <a class="nav-link" href="{% url 'user_login' %}" style="background: transparent; border: 1px solid #007bff; border-radius: 20px; padding: 5px 15px; color: #007bff; font-weight: 600; transition: background 0.3s, color 0.3s;">Login</a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                    
-                </nav>
-            </div>
-        </header>
-         <!-- end header section -->
-
-        <section>
-    <div class="product-details">
-        <div class="product-image">
-            <a href="/product/{{ product.id }}">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            </a>
-        </div>
-        <div class="product-info">
-            <div class="title">{{ product.name }}</div>
-            <div class="description">{{ product.description }}</div>
-            <div class="price">Rs.{{ product.price }}</div>
-
-            <div class="button-group">
-                <form action="{% url 'add_to_cart' product.id %}" method="post" class="add-to-cart-form" {% if product.quantity == 0 %}style="pointer-events: none;"{% endif %}>
-                    {% csrf_token %}
-                    <button type="submit" class="add-to-cart" {% if product.quantity == 0 %}disabled{% endif %}>
-                        {% if product.quantity == 0 %}Out of Stock{% else %}Add to cart{% endif %}
-                    </button>
-                </form>
-                <button type="button" id="shareBtn" {% if product.quantity == 0 %}disabled{% endif %}>
-                    Share
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ product.name }} - Product Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .header_section {
+            background: linear-gradient(135deg, #d2b5b5 0%, #eaeaea 100%);
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .nav-link {
+            font-weight: 600;
+            color: #333;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #007bff;
+        }
+        .product-details {
+            display: flex;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        .product-image {
+            flex: 1;
+            padding-right: 2rem;
+        }
+        .product-image img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .product-info {
+            flex: 2;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 1rem;
+        }
+        .button-group {
+            display: flex;
+            gap: 1rem;
+        }
+        .button-group button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .add-to-cart {
+            background-color: #28a745;
+            color: white;
+        }
+        .add-to-cart:hover {
+            background-color: #218838;
+        }
+        #shareBtn {
+            background-color: #007bff;
+            color: white;
+        }
+        #shareBtn:hover {
+            background-color: #0056b3;
+        }
+        .review-section {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        .review {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .star {
+            color: #ffc107;
+        }
+        .star.filled {
+            color: #ffc107;
+        }
+        .review-form {
+            margin-top: 2rem;
+        }
+        .footer {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 40px 0;
+            color: #333;
+            margin-top: 2rem;
+        }
+        .social-icon {
+            margin-right: 10px;
+        }
+        .widget_menu h3 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .widget_menu ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .widget_menu a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-to-top {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .back-to-top a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .back-to-top a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header class="header_section">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+                <a class="navbar-brand" href="{% url 'index' %}">
+                    <img width="200" src="{% static 'images/logo1.png' %}" alt="Logo" style="max-height: 80px; padding-right: 70px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-            </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'products' %}">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="GET" action="{% url 'search' %}" class="form-inline my-2 my-lg-0">
+                                <input class="form-control mr-sm-2" type="search" name="query" placeholder="Search products..." aria-label="Search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'view_to_wishlist' %}">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'cart' %}">
+                                <i class="fas fa-shopping-cart"></i>
+                            </a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'user_logout' %}">Logout</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-primary" href="{% url 'order_list_and_detail' %}">Track Order</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'user_login' %}">Login</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
         </div>
-    </div>
+    </header>
 
-    <!-- Reviews Section -->
-    <div class="review-section">
-        <div class="reviews-container">
-            <h3>Customer Reviews</h3>
+    <main class="container">
+        <section class="product-details">
+            <div class="product-image">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </div>
+            <div class="product-info">
+                <h1 class="title">{{ product.name }}</h1>
+                <p class="description">{{ product.description }}</p>
+                <div class="price">Rs.{{ product.price }}</div>
+                <div class="button-group">
+                    <form action="{% url 'add_to_cart' product.id %}" method="post" class="add-to-cart-form">
+                        {% csrf_token %}
+                        <button type="submit" class="add-to-cart" {% if product.quantity == 0 %}disabled{% endif %}>
+                            {% if product.quantity == 0 %}Out of Stock{% else %}Add to cart{% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="review-section">
+            <h2>Customer Reviews</h2>
             <div id="reviews">
                 {% for review in reviews %}
                     <div class="review">
@@ -166,11 +243,10 @@
                         </div>
                         <p class="review-comment">{{ review.comment }}</p>
                         <small class="review-date">{{ review.created_at }}</small>
-                        <!-- Delete button -->
                         {% if user == review.user %}
                             <form action="{% url 'delete_review' review.id %}" method="post" class="delete-review-form">
                                 {% csrf_token %}
-                                <button type="submit" class="delete-btn">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         {% endif %}
                     </div>
@@ -179,8 +255,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Review Form -->
-            <h6>Leave a Review</h6>
+            <h3>Leave a Review</h3>
             {% if user.is_authenticated %}
                 <form method="post" class="review-form">
                     {% csrf_token %}
@@ -190,14 +265,76 @@
                     <div class="form-group">
                         {{ form.rating }}
                     </div>
-                    <button type="submit" class="submit-review">Submit Review</button>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
                 </form>
             {% else %}
                 <p>You must be <a href="{% url 'user_login' %}">logged in</a> to leave a review.</p>
             {% endif %}
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="information_f">
+                        <p><strong>ADDRESS:</strong> Koottikal, Kottayam, Kerala</p>
+                        <p><strong>TELEPHONE:</strong> +91 97782 04525</p>
+                        <p><strong>EMAIL:</strong> aleesha777@gmail.com</p>
+                    </div>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="widget_menu">
+                                <h3>Menu</h3>
+                                <ul>
+                                    <li><a href="{% url 'index' %}">Home</a></li>
+                                    <li><a href="{% url 'about' %}">About</a></li>
+                                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                                    <li><a href="{% url 'products' %}">Products</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="widget_menu">
+                                <h3>Account</h3>
+                                <ul>
+                                    <li><a href="{% url 'profile_update' %}">Account</a></li>
+                                    <li><a href="{% url 'view_to_wishlist' %}">Wishlist</a></li>
+                                    <li><a href="{% url 'user_login' %}">Login</a></li>
+                                    <li><a href="{% url 'user_register' %}">Register</a></li>
+                                    <li><a href="{% url 'products' %}">Shopping</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="back-to-top">
+                <a href="#">Back to Top</a>
+            </div>
         </div>
+    </footer>
+
+    <div class="text-center py-3">
+        <p>© 2024 All Rights Reserved By Aleesha Maria George</p>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         const shareBtn = document.querySelector("#shareBtn");
         shareBtn.addEventListener("click", () => {
@@ -209,107 +346,13 @@
                 }).then(() => {
                     console.log("Thanks for sharing");
                 }).catch((err) => {
-                    console.log("Error using Web Share API");
-                    console.error(err);
+                    console.error("Error using Web Share API:", err);
                 });
             } else {
                 alert("Your browser doesn't support Web Share API");
             }
         });
     </script>
-
-    <style>
-        /* Your existing styles */
-        /* Ensure disabled buttons have appropriate styles */
-        .add-to-cart[disabled],
-        #shareBtn[disabled] {
-            background-color: #ccc;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-    </style>
-</section>
-
-        
-      
-       <!-- footer start -->
-       <footer style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 40px 0; color: #333;">
-        <div class="container">
-            <div class="row">
-                <!-- Logo and Contact Information -->
-                <div class="col-md-4">
-                   
-                    <div class="information_f">
-                        <p><strong>ADDRESS:</strong> Koottikal,kottayam,kerala</p>
-                        <p><strong>TELEPHONE:</strong> +91 97782 04525</p>
-                        <p><strong>EMAIL:</strong> aleesha777@gmail.com</p>
-                    </div>
-                    <div class="social-icons" style="margin-top: 20px;">
-                        <a href="#" class="social-icon" aria-label="Facebook">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22 12.1c0-5.5-4.5-10-10-10S2 6.6 2 12.1c0 5.1 3.9 9.3 8.9 9.9v-7h-2.6V12h2.6v-1.9c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.1.1 2.4.2v2.7h-1.7c-1.4 0-1.7.7-1.7 1.6V12h3.2l-.4 3.1h-2.8v7c5.1-.6 8.9-4.8 8.9-9.9z" fill="#4267B2"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="social-icon" aria-label="Twitter">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M23 3a10.4 10.4 0 01-2.8.8A4.8 4.8 0 0022.4 1a9.6 9.6 0 01-3.1 1.2 4.8 4.8 0 00-8.2 4.4c0 .4 0 .8.1 1.1A13.6 13.6 0 011.7 2.4a4.8 4.8 0 001.5 6.4A4.7 4.7 0 01.9 8v.1a4.8 4.8 0 003.9 4.8 4.7 4.7 0 01-2.1.1c.6 1.8 2.3 3.2 4.3 3.3a9.6 9.6 0 01-5.9 2.1c-.4 0-.8 0-1.2-.1a13.6 13.6 0 007.4 2.2c8.8 0 13.6-7.3 13.6-13.6v-.6A9.8 9.8 0 0023 3z" fill="#1DA1F2"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="social-icon" aria-label="Instagram">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2.2c-6 0-10.8 4.7-10.8 10.8s4.8 10.8 10.8 10.8S22.8 19 22.8 12 18 2.2 12 2.2zm0 19.6c-4.9 0-8.8-3.9-8.8-8.8s3.9-8.8 8.8-8.8 8.8 3.9 8.8 8.8-3.9 8.8-8.8 8.8zm5.2-12.2c0 .6-.5 1.1-1.1 1.1s-1.1-.5-1.1-1.1.5-1.1 1.1-1.1 1.1.5 1.1 1.1zm-5.2 2.9c-2.4 0-4.4 1.9-4.4 4.4s1.9 4.4 4.4 4.4 4.4-1.9 4.4-4.4-2-4.4-4.4-4.4zM20.4 3h-2.8v2.8H8.4V3H5.6c-.6 0-1 .4-1 1v2.8h-2.8c-.6 0-1 .4-1 1v2.8c0 .6.4 1 1 1h2.8v2.8c0 .6.4 1 1 1h2.8v-2.8h6.4v2.8c0 .6.4 1 1 1h2.8c.6 0 1-.4 1-1v-2.8c0-.6-.4-1-1-1z" fill="#E4405F"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <!-- Menu Links -->
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="widget_menu">
-                                <h3 style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px;">Menu</h3>
-                                <ul style="list-style-type: none; padding: 0;">
-                                    <li><a href="{% url 'index' %}" style="color: #007bff; text-decoration: none;">Home</a></li>
-                                    <li><a href="{% url 'about' %}" style="color: #007bff; text-decoration: none;">About</a></li>
-                                    <li><a href="{% url 'contact' %}" style="color: #007bff; text-decoration: none;">Contact</a></li>
-                                    <li><a href="{% url 'products' %}" style="color: #007bff; text-decoration: none;">Products</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="widget_menu">
-                                <h3 style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 20px;">Account</h3>
-                                <ul style="list-style-type: none; padding: 0;">
-                                    <li><a href="{% url 'profile_update' %}" style="color: #007bff; text-decoration: none;">Account</a></li>
-                                    <li><a href="{% url 'view_to_wishlist' %}" style="color: #007bff; text-decoration: none;">Wishlist</a></li>
-                                    <li><a href="{% url 'user_login' %}" style="color: #007bff; text-decoration: none;">Login</a></li>
-                                    <li><a href="{% url 'user_register' %}" style="color: #007bff; text-decoration: none;">Register</a></li>
-                                    <li><a href="{% url 'products' %}" style="color: #007bff; text-decoration: none;">Shopping</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Back to Top Button -->
-            <div class="back-to-top" style="text-align: center; margin-top: 30px;">
-                <a href="#" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Back to Top</a>
-            </div>
-        </div>
-    </footer>
-    
-          <!-- footer end -->
-          <div class="cpy_">
-             <p>© 2024 All Rights Reserved By Aleesha maria george</a></p>
-          </div>
-          <!-- jQuery -->
-          <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-          <!-- popper js -->
-          <script src="{% static 'js/popper.min.js' %}"></script>
-          <!-- bootstrap js -->
-          <script src="{% static 'js/bootstrap.js' %}"></script>
-          <!-- custom js -->
-          <script src="{% static 'js/custom.js' %}"></script>
-       </body>
-    </html>
+</body>
+</html>
     
