@@ -176,9 +176,9 @@
                 {% for item in product_sales %}
                 <tr>
                     <td>{{ item.product__name }}</td>
-                    <td>${{ item.unit_price }}</td>
+                    <td>RS.{{ item.unit_price }}</td>
                     <td>{{ item.total_quantity }}</td>
-                    <td>${{ item.total_amount }}</td>
+                    <td>RS.{{ item.total_amount }}</td>
                 </tr>
                 {% empty %}
                 <tr>
