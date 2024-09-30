@@ -129,21 +129,30 @@
             color: #721c24; /* Dark red text */
         }
 
-
         .sidebar a.index {
-    display: block; /* Makes it a block element */
-    text-align: center; /* Centers the text */
-    background-color: transparent; /* Background to match sidebar */
-    color: white; /* Text color */
-    padding: 10px; /* Padding around the link */
-    margin: 10px 0; /* Spacing above and below */
-    border-radius: 5px; /* Rounded corners */
-}
+            display: block;
+            text-align: center;
+            background-color: transparent;
+            color: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
 
-.sidebar a.index:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Slightly lighter on hover */
-    color: white; /* Keeps text color white on hover */
-}
+        .sidebar a.index:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* New styles for status update feedback */
+        .status-update-feedback {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -153,7 +162,6 @@
         <div class="user-info">
             {% if request.user.is_authenticated %}
             <i class="fas fa-user"></i> Hai, {{ user.username }}
-           
             {% endif %}
         </div>
         {% if not request.user.is_superuser %}
@@ -189,6 +197,9 @@
             </form>
             {% endif %}
         </div>
+
+        <!-- Status update feedback message -->
+        <div id="statusUpdateFeedback" class="status-update-feedback"></div>
     
         <table>
             <thead>
@@ -202,26 +213,29 @@
                     <th>Update Status</th>
                     {% endif %}
                     <th>Details</th>
+                    {% if not request.user.is_superuser %}
+                    <th>Actions</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for order in orders %}
-                <tr class="{{ order.status }} animate_animated animate_fadeInUp">
+                <tr class="{{ order.status }} animate__animated animate__fadeInUp">
                     <td>OD24M{{ order.id }}</td>
                     <td>{{ order.fullname }}</td>
                     <td>{{ order.address }}, {{ order.city }}, {{ order.postal_code }}</td>
-                    <td>${{ order.total_amount }}</td>
-                    <td>{{ order.get_status_display }}</td>
+                    <td>Rs.{{ order.total_amount }}</td>
+                    <td class="order-status-{{ order.id }}">{{ order.get_status_display }}</td>
     
                     {% if request.user.is_superuser %}
                     <td>
-                        <form action="{% url 'update_status' order.id %}" method="post">
+                        <form action="{% url 'update_status' order.id %}" method="post" class="status-update-form">
                             {% csrf_token %}
                             <select name="status" {% if order.status == "cancelled" %}disabled{% endif %}>
-                                <option value="processing">Processing</option>
-                                <option value="out_for_delivery">Out for Delivery</option>
-                                <option value="shipped">Shipped</option>
-                                <option value="delivered">Delivered</option>
+                                <option value="processing" {% if order.status == "processing" %}selected{% endif %}>Processing</option>
+                                <option value="out_for_delivery" {% if order.status == "out_for_delivery" %}selected{% endif %}>Out for Delivery</option>
+                                <option value="shipped" {% if order.status == "shipped" %}selected{% endif %}>Shipped</option>
+                                <option value="delivered" {% if order.status == "delivered" %}selected{% endif %}>Delivered</option>
                             </select>
                             <button type="submit" {% if order.status == "cancelled" %}disabled{% endif %}>Update</button>
                         </form>
@@ -230,12 +244,14 @@
     
                     <td><a href="{% url 'order_detail' order.id %}" class="view-details-link">View Details</a></td>
     
-                    {% if not request.user.is_superuser and order.status == 'processing' %}
+                    {% if not request.user.is_superuser %}
                     <td>
+                        {% if order.status == 'processing' %}
                         <form action="{% url 'cancel_order' order.id %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="cancel-button">Cancel Order</button>
                         </form>
+                        {% endif %}
                     </td>
                     {% endif %}
                 </tr>
@@ -243,6 +259,38 @@
             </tbody>
         </table>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.status-update-form').on('submit', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var url = form.attr('action');
+                var orderId = url.split('/').pop();
+                
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            // Update the status display
+                            $('.order-status-' + orderId).text(response.new_status_display);
+                            
+                            // Show feedback message
+                            $('#statusUpdateFeedback').text('Status updated successfully!').show().delay(3000).fadeOut();
+                        } else {
+                            $('#statusUpdateFeedback').text('Failed to update status.').show().delay(3000).fadeOut();
+                        }
+                    },
+                    error: function() {
+                        $('#statusUpdateFeedback').text('An error occurred. Please try again.').show().delay(3000).fadeOut();
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -677,19 +677,24 @@ def search_view(request):
     return render(request, 'search_results.html', context)
 
 
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+
 @login_required
 def update_status(request, order_id):
-    # Update order status view
     if request.method == 'POST':
         new_status = request.POST.get('status')
-        try:
-            order = Order.objects.get(pk=order_id)
-            order.status = new_status
-            order.save()
-            messages.success(request, 'Order status updated successfully.')
-        except Order.DoesNotExist:
-            messages.error(request, 'Order not found.')
-    return redirect('order_list_and_detail')  # Redirect to orders list
+        order = get_object_or_404(Order, pk=order_id)
+        order.status = new_status
+        order.save()
+        
+        return JsonResponse({
+            'success': True,
+            'new_status_display': order.get_status_display()
+        })
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 def stock(request):
     products_at_reorder_level = Product.objects.filter(quantity__lte=F('reorderlevel'))

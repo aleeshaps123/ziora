@@ -146,7 +146,7 @@
                         <tr>
                             <td><img src="{{ item.image.url }}" alt="{{ item.name }}" style="max-width: 100px;"></td>
                             <td>{{ item.name }}</td>
-                            <td>${{ item.price }}</td>
+                            <td>Rs.{{ item.price }}</td>
                             <td>
                                 <ul class="quantity-container">
                                     <span>
@@ -163,13 +163,13 @@
                                     </span>
                                 </ul>
                             </td>
-                            <td>${{ item.total_price }}</td>
+                            <td>Rs.{{ item.total_price }}</td>
                             <td><a href="{% url 'remove_from_cart' item.id %}" class="delete-btn">Delete</a></td>
                         </tr>
                     {% endfor %}
                     <tr class="total-row">
                         <td colspan="4" align="right">Total:</td>
-                        <td>${{ total_price }}</td>
+                        <td>Rs.{{ total_price }}</td>
                         <td></td>
                     </tr>
                 </tbody>
